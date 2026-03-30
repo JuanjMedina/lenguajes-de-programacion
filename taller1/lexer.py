@@ -345,4 +345,7 @@ def tokenize(source: str) -> None:
 if __name__ == '__main__':
     sys.stdout.reconfigure(encoding='utf-8')
     source = sys.stdin.buffer.read().decode('utf-8')
+    # Eliminar BOM (Byte Order Mark) si está presente
+    if source.startswith('\ufeff'):
+        source = source[1:]
     tokenize(source)
