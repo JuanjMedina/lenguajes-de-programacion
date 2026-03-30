@@ -67,7 +67,7 @@ RESERVED_WORDS = {
     'posicion', 'copiarDentro', 'entradas', 'cada', 'llenar', 'filtrar',
     'buscar', 'buscarIndice', 'buscarUltimo', 'buscarUltimoIndice',
     'plano', 'planoMapear', 'paraCada', 'grupo', 'grupoAMapear',
-    'claves', 'mapear', 'sacar', 'agregar', 'reducir', 'reducirDerecha',
+    'juntar', 'claves', 'mapear', 'sacar', 'agregar', 'reducir', 'reducirDerecha',
     'reverso', 'sacarPrimero', 'rodaja', 'algun', 'ordenar', 'empalmar',
     'agregarInicio', 'valores',
     # Promise methods
@@ -180,8 +180,11 @@ def tokenize(source: str) -> None:
 
             # Comentario de bloque /* ... */
             if pos + 1 < n and source[pos + 1] == '*':
+                comment_line = tok_line
+                comment_col = tok_col
                 pos += 2
                 col += 2
+                closed_comment = False
                 while pos < n:
                     if source[pos] == '\n':
                         line += 1
@@ -190,18 +193,14 @@ def tokenize(source: str) -> None:
                     elif source[pos:pos + 2] == '*/':
                         pos += 2
                         col += 2
+                        closed_comment = True
                         break
                     else:
                         col += 1
                         pos += 1
-                continue
-
-            # Operador /=
-            if pos + 1 < n and source[pos + 1] == '=':
-                print(f'<tkn_div_assign,{tok_line},{tok_col}>')
-                pos += 2
-                col += 2
-                last_was_value = False
+                if not closed_comment:
+                    print(f'>>> Error lexico (linea: {comment_line}, posicion: {comment_col})')
+                    return
                 continue
 
             # Expresión regular /pattern/ (solo si el token anterior no fue valor)
@@ -237,6 +236,14 @@ def tokenize(source: str) -> None:
                 # No se encontró cierre: revertir y tratar como división
                 pos, col = save_pos, save_col
 
+            # Operador /=
+            if pos + 1 < n and source[pos + 1] == '=':
+                print(f'<tkn_div_assign,{tok_line},{tok_col}>')
+                pos += 2
+                col += 2
+                last_was_value = False
+                continue
+
             # Operador de división
             print(f'<tkn_div,{tok_line},{tok_col}>')
             pos += 1
@@ -250,6 +257,7 @@ def tokenize(source: str) -> None:
             pos += 1
             col += 1
             chars = []
+            closed = False
             while pos < n:
                 ch = source[pos]
                 if ch == '\\':
@@ -263,6 +271,7 @@ def tokenize(source: str) -> None:
                 elif ch == quote:
                     pos += 1
                     col += 1
+                    closed = True
                     break
                 elif ch == '\n':
                     print(f'>>> Error lexico (linea: {tok_line}, posicion: {tok_col})')
@@ -271,6 +280,9 @@ def tokenize(source: str) -> None:
                     chars.append(ch)
                     pos += 1
                     col += 1
+            if not closed:
+                print(f'>>> Error lexico (linea: {tok_line}, posicion: {tok_col})')
+                return
             print(f'<tkn_str,{"".join(chars)},{tok_line},{tok_col}>')
             last_was_value = True
             continue
