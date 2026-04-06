@@ -212,6 +212,7 @@ def tokenize(source: str) -> None:
                 col += 1
                 regex_chars = []
                 found_close = False
+                in_char_class = False
                 while pos < n and source[pos] != '\n':
                     ch = source[pos]
                     if ch == '\\':
@@ -222,7 +223,17 @@ def tokenize(source: str) -> None:
                             regex_chars.append(source[pos])
                             pos += 1
                             col += 1
-                    elif ch == '/':
+                    elif ch == '[':
+                        in_char_class = True
+                        regex_chars.append(ch)
+                        pos += 1
+                        col += 1
+                    elif ch == ']' and in_char_class:
+                        in_char_class = False
+                        regex_chars.append(ch)
+                        pos += 1
+                        col += 1
+                    elif ch == '/' and not in_char_class:
                         pos += 1
                         col += 1
                         found_close = True
