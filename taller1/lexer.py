@@ -11,13 +11,14 @@ RESERVED_WORDS = {
     'ambiente', 'super', 'de', 'en',
     # Storage types
     'asincrono', 'clase', 'const', 'var', 'mut', 'porDefecto', 'funcion',
+    'estático', 'este',
     # Language constants
     'falso', 'nulo', 'verdadero', 'indefinido', 'Infinito', 'NuN',
     'ambienteGlobal',
     # Support functions (built-in objects)
     'consola', 'depurador', 'establecerTemporizador', 'establecerIntervalo',
     'Fecha', 'Numero', 'Mate', 'Matriz', 'Arreglo', 'Booleano', 'Cadena',
-    'Funcion', 'Promesa',
+    'Funcion', 'Promesa', 'Objeto', 'Mapa', 'Conjunto',
     # Console methods
     'afirmar', 'limpiar', 'contar', 'reiniciarContador', 'depurar',
     'listar', 'listarXml', 'error', 'agrupar', 'agruparColapsado',
@@ -78,6 +79,7 @@ RESERVED_WORDS = {
 # Palabras reservadas que actúan como valores (para la heurística de regex vs división)
 VALUE_RESERVED = {
     'verdadero', 'falso', 'nulo', 'indefinido', 'Infinito', 'NuN', 'ambiente',
+    'este', 'Objeto', 'Mapa', 'Conjunto',
 }
 
 # ─── Operadores y símbolos (orden: más largo primero para maximal munch) ────────
