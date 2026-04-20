@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:esjs.dev)",
+      "WebFetch(domain:es.js.org)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(printf 'const getSubject = \\(\\) => {\\\\n  consola.escribir\\(\"\"\"\"EsJs \\(\\\\xe2\\\\x97\\\\x95\\\\xe2\\\\x80\\\\xbf\\\\xe2\\\\x97\\\\x95\\)\"\"\"\"\\)\\\\n  como se retornaba? @__@\\\\n}\\\\nconsola.escribir\\(getSubject\\(\\)\\)')",
+      "Bash(py lexer.py)",
+      "Bash(py:*)"
+    ]
+  }
+}
